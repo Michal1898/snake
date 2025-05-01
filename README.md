@@ -2,7 +2,7 @@
 
 A classic Snake Game implementation in Java using Swing for GUI. This project demonstrates Object-Oriented Programming principles and basic game development concepts.
 
-![Snake Game Screenshot](https://github.com/StreetOfCode/snake-game/raw/master/screenshots/game.png)
+![Snake Game Screenshot](https://github.com/StreetOfCode/snake-java/blob/master/src/screenshots/game.jpg)
 
 ## Features
 
@@ -78,8 +78,8 @@ This project demonstrates:
 
 ---
 
-Feel free to fork this project and make your own improvements. Pull requests are welcome!
+Feel free to fork this project and make your own improvements.
 
-## Connect With Me
+## Connect With Us
 
-[Your YouTube Channel](https://youtube.com/c/yourchannel)
+[YouTube Channel](https://www.youtube.com/@streetofcode)
