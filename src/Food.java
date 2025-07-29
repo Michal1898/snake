@@ -1,4 +1,5 @@
 // Food.java
+
 import java.awt.*;
 import java.util.Random;
 
@@ -13,8 +14,8 @@ public class Food {
     }
 
     public void respawn(Random random, int screenWidth, int screenHeight, int unitSize) {
-        x = random.nextInt(screenWidth / unitSize) * unitSize;
-        y = random.nextInt(screenHeight / unitSize) * unitSize;
+        x = random.nextInt(screenWidth / unitSize) * unitSize + GamePanel.spaceX;
+        y = random.nextInt(screenHeight / unitSize) * unitSize + GamePanel.spaceY;
     }
 
     public void draw(Graphics g) {
@@ -24,7 +25,7 @@ public class Food {
 
         // Odlesk na jablku
         g.setColor(Color.WHITE);
-        g.fillOval(x + unitSize/4, y + unitSize/4, unitSize/6, unitSize/6);
+        g.fillOval(x + unitSize / 4, y + unitSize / 4, unitSize / 6, unitSize / 6);
     }
 
     public int getX() {

@@ -1,4 +1,5 @@
 // Snake.java
+
 import java.awt.*;
 
 public class Snake {
@@ -19,8 +20,8 @@ public class Snake {
 
         // Inicializácia počiatočnej pozície hada
         for (int i = 0; i < bodyParts; i++) {
-            x[i] = 100 - i * unitSize;
-            y[i] = 100;
+            x[i] = 200 - i * unitSize;
+            y[i] = 250;
         }
     }
 
@@ -57,13 +58,13 @@ public class Snake {
         g.setColor(Color.BLACK);
 
         // Pravé oko
-        g.fillRect(x[0] + unitSize/4, y[0] + unitSize/4, unitSize/8, unitSize/8);
+        g.fillRect(x[0] + unitSize / 4, y[0] + unitSize / 4, unitSize / 8, unitSize / 8);
         // Ľavé oko
-        g.fillRect(x[0] + unitSize*3/4 - unitSize/8, y[0] + unitSize/4, unitSize/8, unitSize/8);
+        g.fillRect(x[0] + unitSize * 3 / 4 - unitSize / 8, y[0] + unitSize / 4, unitSize / 8, unitSize / 8);
 
         // Nakresli telo s rôznymi odtieňmi pre lepší efekt
         for (int i = 1; i < bodyParts; i++) {
-            g.setColor(new Color(0, 140 - i*3, 0));  // Postupne tmavnúce telo
+            g.setColor(new Color(0, 140 - i * 3, 0));  // Postupne tmavnúce telo
             g.fillRect(x[i], y[i], unitSize, unitSize);
         }
     }

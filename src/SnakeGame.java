@@ -1,8 +1,8 @@
 import javax.swing.*;
 
 public class SnakeGame extends JFrame {
-    public static final int SCREEN_WIDTH = 600;
-    public static final int SCREEN_HEIGHT = 600;
+    public static final int SCREEN_WIDTH = 900;
+    public static final int SCREEN_HEIGHT = 800;
     public static final int UNIT_SIZE = 20;
     public static final int DELAY = 100;
 

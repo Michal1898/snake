@@ -17,6 +17,12 @@ public class GamePanel extends JPanel implements ActionListener {
     private int score;
     private boolean gameOver;
 
+    public static int terrariumWidth =700;
+    public static int terrariumHeight = 500;
+    public static int spaceX = (SnakeGame.SCREEN_WIDTH -terrariumWidth) / 2;
+    public static int spaceY = (SnakeGame.SCREEN_HEIGHT -terrariumHeight) / 2;
+
+
     public GamePanel() {
         random = new Random();
         score = 0;
@@ -30,7 +36,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void startGame() {
         snake = new Snake(3, SnakeGame.UNIT_SIZE);
-        food = new Food(random, SnakeGame.SCREEN_WIDTH,SnakeGame.SCREEN_HEIGHT, SnakeGame.UNIT_SIZE);
+        food = new Food(random, this.terrariumWidth,this.terrariumHeight, SnakeGame.UNIT_SIZE);
         score = 0;
         running = true;
         timer = new Timer(SnakeGame.DELAY, this);
@@ -46,10 +52,34 @@ public class GamePanel extends JPanel implements ActionListener {
         if (running) {
             // Vykreslenie mriežky (voliteľné, pomáha pri vývoji)
             g.setColor(Color.DARK_GRAY);
-            for (int i = 0; i < SnakeGame.SCREEN_WIDTH/ SnakeGame.UNIT_SIZE; i++) {
-                g.drawLine(i * SnakeGame.UNIT_SIZE, 0, i * SnakeGame.UNIT_SIZE, SnakeGame.SCREEN_WIDTH);
-                g.drawLine(0, i * SnakeGame.UNIT_SIZE, SnakeGame.SCREEN_WIDTH, i * SnakeGame.UNIT_SIZE);
+            // Set terrarium limits
+
+            //draw terrarium for snake
+            // Snake is dangerous animal and must be closed in terrarium"
+
+            // fill terrarium with squares for better orientation
+            g.setColor(Color.blue);
+            for (int x = spaceX; x < (spaceX+terrariumWidth) / SnakeGame.UNIT_SIZE; x++) {
+
             }
+            g.setColor(Color.DARK_GRAY);
+            for (int y = 0; y <= terrariumHeight / SnakeGame.UNIT_SIZE; y++) {
+                int yCoord = spaceY + y * SnakeGame.UNIT_SIZE;
+                g.drawLine(spaceX ,yCoord, spaceX + terrariumWidth, yCoord);
+            }
+
+            for (int x = 0; x <= terrariumWidth / SnakeGame.UNIT_SIZE; x++) {
+                int xCoord = spaceX + x * SnakeGame.UNIT_SIZE;
+                g.drawLine(xCoord ,spaceY, xCoord , spaceY + terrariumHeight);
+            }
+
+            // draw terrarium shapes
+            g.setColor(Color.BLUE);
+            g.drawLine(spaceX ,spaceY, spaceX , spaceY + terrariumHeight);
+            g.drawLine(spaceX ,spaceY + terrariumHeight, spaceX + terrariumWidth , spaceY + terrariumHeight);
+
+            g.drawLine(spaceX + terrariumWidth,spaceY, spaceX + terrariumWidth , spaceY + terrariumHeight);
+            g.drawLine(spaceX ,spaceY, spaceX + terrariumWidth , spaceY);
 
             food.draw(g);
 
@@ -60,7 +90,7 @@ public class GamePanel extends JPanel implements ActionListener {
             g.setFont(new Font("Calibri", Font.BOLD, 20));
             g.drawString("Score: " + score, 10, 30);
         } else {
-            gameOver(g);
+ gameOver(g);
         }
     }
 
@@ -105,8 +135,13 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         // Kontrola kolízie so stenou
-        if (snake.getHeadX() < 0 || snake.getHeadX() >= SnakeGame.SCREEN_WIDTH ||
-                snake.getHeadY() < 0 || snake.getHeadY() >= SnakeGame.SCREEN_HEIGHT) {
+        int terrariumTop=GamePanel.spaceY;
+        int terrariumBottom=GamePanel.terrariumHeight+GamePanel.spaceY;
+        int terrariumLeft=GamePanel.spaceX;
+        int terrariumRight=GamePanel.terrariumWidth+GamePanel.spaceX;
+
+        if (snake.getHeadX() < terrariumLeft || snake.getHeadX() >= terrariumRight ||
+        snake.getHeadY() < terrariumTop || snake.getHeadY() >= terrariumBottom) {
             running = false;
             gameOver = true;
         }
@@ -120,7 +155,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private void checkFoodCollision() {
         if (snake.getHeadX() == food.getX() && snake.getHeadY() == food.getY()) {
             snake.grow();
-            food.respawn(random, SnakeGame.SCREEN_WIDTH, SnakeGame.SCREEN_HEIGHT, SnakeGame.UNIT_SIZE);
+            food.respawn(random, this.terrariumWidth, this.terrariumHeight, SnakeGame.UNIT_SIZE);
             score++;
         }
     }
