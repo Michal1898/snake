@@ -70,7 +70,7 @@ public class Snake {
             if (green <= 0) {
                 green += 200;
             }
-            ;
+
             int blue = (0 + i * 6) % 256;
             g.setColor(new Color(red, green, blue));
             g.fillRect(x[i], y[i], unitSize, unitSize);

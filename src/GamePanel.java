@@ -96,7 +96,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
             snake.draw(g);
 
-            // Zobraz skóre
+            // Zobraz  skóre
             g.setColor(Color.WHITE);
             g.setFont(new Font("Calibri", Font.BOLD, 30));
             g.drawString("Score: " + score, spaceX + 5, 50);
