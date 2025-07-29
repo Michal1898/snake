@@ -65,7 +65,7 @@ public class Snake {
         // Nakresli telo s rôznymi odtieňmi pre lepší efekt
         for (int i = 1; i < bodyParts; i++) {
             // Change color of snake according its length
-            g.setColor(new Color(i%256 , (140 - i * 6)%256, (0 + i * 6)%256));
+            g.setColor(new Color(i % 256, (140 - i * 6) % 256, (0 + i * 6) % 256));
             g.fillRect(x[i], y[i], unitSize, unitSize);
         }
     }

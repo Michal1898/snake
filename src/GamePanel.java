@@ -19,12 +19,13 @@ public class GamePanel extends JPanel implements ActionListener {
     private static int temporaryCounter;
     private static int temporaryCounter2;
     private static int timerMultiply;
+    private static int timerApple;
     private static int lives;
 
-    public static int terrariumWidth =700;
+    public static int terrariumWidth = 700;
     public static int terrariumHeight = 500;
-    public static int spaceX = (SnakeGame.SCREEN_WIDTH -terrariumWidth) / 2;
-    public static int spaceY = (SnakeGame.SCREEN_HEIGHT -terrariumHeight) / 2;
+    public static int spaceX = (SnakeGame.SCREEN_WIDTH - terrariumWidth) / 2;
+    public static int spaceY = (SnakeGame.SCREEN_HEIGHT - terrariumHeight) / 2;
 
 
     public GamePanel() {
@@ -45,10 +46,10 @@ public class GamePanel extends JPanel implements ActionListener {
             lives = SnakeGame.SNAKE_LIVES;
         }
         snake = new Snake(3, SnakeGame.UNIT_SIZE);
-        food = new Food(random, this.terrariumWidth,this.terrariumHeight, SnakeGame.UNIT_SIZE);
+        food = new Food(random, this.terrariumWidth, this.terrariumHeight, SnakeGame.UNIT_SIZE);
 
         running = true;
-        timerMultiply =20;
+        timerMultiply = 20;
         timer = new Timer(SnakeGame.DELAY, this);
         timer.start();
     }
@@ -69,27 +70,27 @@ public class GamePanel extends JPanel implements ActionListener {
 
             // fill terrarium with squares for better orientation
             g.setColor(Color.blue);
-            for (int x = spaceX; x < (spaceX+terrariumWidth) / SnakeGame.UNIT_SIZE; x++) {
+            for (int x = spaceX; x < (spaceX + terrariumWidth) / SnakeGame.UNIT_SIZE; x++) {
 
             }
             g.setColor(Color.DARK_GRAY);
             for (int y = 0; y <= terrariumHeight / SnakeGame.UNIT_SIZE; y++) {
                 int yCoord = spaceY + y * SnakeGame.UNIT_SIZE;
-                g.drawLine(spaceX ,yCoord, spaceX + terrariumWidth, yCoord);
+                g.drawLine(spaceX, yCoord, spaceX + terrariumWidth, yCoord);
             }
 
             for (int x = 0; x <= terrariumWidth / SnakeGame.UNIT_SIZE; x++) {
                 int xCoord = spaceX + x * SnakeGame.UNIT_SIZE;
-                g.drawLine(xCoord ,spaceY, xCoord , spaceY + terrariumHeight);
+                g.drawLine(xCoord, spaceY, xCoord, spaceY + terrariumHeight);
             }
 
             // draw terrarium shapes
             g.setColor(Color.BLUE);
-            g.drawLine(spaceX ,spaceY, spaceX , spaceY + terrariumHeight);
-            g.drawLine(spaceX ,spaceY + terrariumHeight, spaceX + terrariumWidth , spaceY + terrariumHeight);
+            g.drawLine(spaceX, spaceY, spaceX, spaceY + terrariumHeight);
+            g.drawLine(spaceX, spaceY + terrariumHeight, spaceX + terrariumWidth, spaceY + terrariumHeight);
 
-            g.drawLine(spaceX + terrariumWidth,spaceY, spaceX + terrariumWidth , spaceY + terrariumHeight);
-            g.drawLine(spaceX ,spaceY, spaceX + terrariumWidth , spaceY);
+            g.drawLine(spaceX + terrariumWidth, spaceY, spaceX + terrariumWidth, spaceY + terrariumHeight);
+            g.drawLine(spaceX, spaceY, spaceX + terrariumWidth, spaceY);
 
             food.draw(g);
 
@@ -98,13 +99,13 @@ public class GamePanel extends JPanel implements ActionListener {
             // Zobraz skóre
             g.setColor(Color.WHITE);
             g.setFont(new Font("Calibri", Font.BOLD, 30));
-            g.drawString("Score: " + score, spaceX+5, 50);
+            g.drawString("Score: " + score, spaceX + 5, 50);
             g.setFont(new Font("Calibri", Font.BOLD, 30));
-            g.drawString("Lives: " + lives, spaceX+5, 100);
+            g.drawString("Lives: " + lives, spaceX + 5, 100);
             // Zobraz pocet zivotu
 
         } else {
- gameOver(g);
+            gameOver(g);
         }
     }
 
@@ -116,11 +117,11 @@ public class GamePanel extends JPanel implements ActionListener {
             g.setFont(new Font("Calibri", Font.BOLD, 75));
             FontMetrics metrics = getFontMetrics(g.getFont());
             g.drawString("Game Over", (GamePanel.terrariumWidth - metrics.stringWidth("Game Over")) / 2, 400);
-        }else{
+        } else {
             g.setColor(Color.YELLOW);
             g.setFont(new Font("Calibri", Font.BOLD, 75));
             FontMetrics metrics = getFontMetrics(g.getFont());
-            g.drawString("Lives : "+ lives, (GamePanel.terrariumWidth - metrics.stringWidth("Lives : " +lives)) / 2, 400);
+            g.drawString("Lives : " + lives, (GamePanel.terrariumWidth - metrics.stringWidth("Lives : " + lives)) / 2, 400);
         }
 
 
@@ -138,25 +139,33 @@ public class GamePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (++timerApple > 250) {
+            timerApple = 0;
+            food.respawn(random, this.terrariumWidth, this.terrariumHeight, SnakeGame.UNIT_SIZE);
+        }
 // nebyl jsem schopny prenastavit timer interval
         // proto jsem nabastlil tuhle prasarnu.
         //Az se to naucim, tak to zrusim!
-        if (++temporaryCounter> timerMultiply){
-            if(++temporaryCounter2> 30-timerMultiply){
-                temporaryCounter2=0;
-                temporaryCounter=0;
+// nebyl jsem schopny prenastavit timer interval
+        // proto jsem nabastlil tuhle prasarnu.
+        //Az se to naucim, tak to zrusim!
+        if (++temporaryCounter > timerMultiply) {
+            if (++temporaryCounter2 > 30 - timerMultiply) {
+                temporaryCounter2 = 0;
+                temporaryCounter = 0;
                 timerMultiply--;
 
-            if(timerMultiply >1){
-                timerMultiply--;
-            }else {
-                timerMultiply =1;
-                // not necessary, but
-                //better save than sorry
-            }}
+                if (timerMultiply > 5) {
+                    timerMultiply--;
+                } else {
+                    timerMultiply = 3;
+                    // not necessary, but
+                    //better save than sorry
+                }
+            }
 
             if (running) {
-                temporaryCounter=0;
+                temporaryCounter = 0;
                 snake.move();
                 checkFoodCollision();
                 checkCollisions();
@@ -164,19 +173,19 @@ public class GamePanel extends JPanel implements ActionListener {
             }
             repaint();
         }
-
-
     }
 
-    private void lifeLost (){
-        if (lives>0){
+
+    private void lifeLost() {
+        if (lives > 0) {
             lives--;
             running = false;
-        }else{
+        } else {
             gameOver = true;
             running = false;
         }
     }
+
     // Pridať metódu pre kontrolu kolízií
     private void checkCollisions() {
         // Kontrola kolízie s telom
@@ -187,13 +196,13 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         // Kontrola kolízie so stenou
-        int terrariumTop=GamePanel.spaceY;
-        int terrariumBottom=GamePanel.terrariumHeight+GamePanel.spaceY;
-        int terrariumLeft=GamePanel.spaceX;
-        int terrariumRight=GamePanel.terrariumWidth+GamePanel.spaceX;
+        int terrariumTop = GamePanel.spaceY;
+        int terrariumBottom = GamePanel.terrariumHeight + GamePanel.spaceY;
+        int terrariumLeft = GamePanel.spaceX;
+        int terrariumRight = GamePanel.terrariumWidth + GamePanel.spaceX;
 
         if (snake.getHeadX() < terrariumLeft || snake.getHeadX() >= terrariumRight ||
-        snake.getHeadY() < terrariumTop || snake.getHeadY() >= terrariumBottom) {
+                snake.getHeadY() < terrariumTop || snake.getHeadY() >= terrariumBottom) {
             lifeLost();
         }
 
