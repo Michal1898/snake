@@ -19,6 +19,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private static int temporaryCounter;
     private static int temporaryCounter2;
     private static int timerMultiply;
+    private static int lives;
 
     public static int terrariumWidth =700;
     public static int terrariumHeight = 500;
@@ -29,7 +30,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public GamePanel() {
         random = new Random();
         score = 0;
-        gameOver = false;
+        gameOver = true; // to init game correctly
         this.setPreferredSize(new Dimension(SnakeGame.SCREEN_WIDTH, SnakeGame.SCREEN_HEIGHT)); // PRIDAJTE TOTO
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
@@ -38,9 +39,14 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void startGame() {
+        if (gameOver) {
+            gameOver = false;
+            score = 0;
+            lives = SnakeGame.SNAKE_LIVES;
+        }
         snake = new Snake(3, SnakeGame.UNIT_SIZE);
         food = new Food(random, this.terrariumWidth,this.terrariumHeight, SnakeGame.UNIT_SIZE);
-        score = 0;
+
         running = true;
         timerMultiply =20;
         timer = new Timer(SnakeGame.DELAY, this);
@@ -91,8 +97,12 @@ public class GamePanel extends JPanel implements ActionListener {
 
             // Zobraz skóre
             g.setColor(Color.WHITE);
-            g.setFont(new Font("Calibri", Font.BOLD, 20));
-            g.drawString("Score: " + score, 10, 30);
+            g.setFont(new Font("Calibri", Font.BOLD, 30));
+            g.drawString("Score: " + score, spaceX+5, 50);
+            g.setFont(new Font("Calibri", Font.BOLD, 30));
+            g.drawString("Lives: " + lives, spaceX+5, 100);
+            // Zobraz pocet zivotu
+
         } else {
  gameOver(g);
         }
@@ -101,16 +111,24 @@ public class GamePanel extends JPanel implements ActionListener {
     // Pridať metódu pre Game Over obrazovku
     private void gameOver(Graphics g) {
         // Text "Game Over"
-        g.setColor(Color.RED);
-        g.setFont(new Font("Calibri", Font.BOLD, 75));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        g.drawString("Game Over", (SnakeGame.SCREEN_WIDTH - metrics.stringWidth("Game Over")) / 2, SnakeGame.SCREEN_WIDTH / 2);
+        if (gameOver) {
+            g.setColor(Color.RED);
+            g.setFont(new Font("Calibri", Font.BOLD, 75));
+            FontMetrics metrics = getFontMetrics(g.getFont());
+            g.drawString("Game Over", (GamePanel.terrariumWidth - metrics.stringWidth("Game Over")) / 2, 400);
+        }else{
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Calibri", Font.BOLD, 75));
+            FontMetrics metrics = getFontMetrics(g.getFont());
+            g.drawString("Lives : "+ lives, (GamePanel.terrariumWidth - metrics.stringWidth("Lives : " +lives)) / 2, 400);
+        }
+
 
         // Zobraz skóre
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Calibri", Font.BOLD, 30));
-        metrics = getFontMetrics(g.getFont());
-        g.drawString("Score: " + score, (SnakeGame.SCREEN_WIDTH - metrics.stringWidth("Score: " + score)) / 2, SnakeGame.SCREEN_WIDTH / 2 + 50);
+        g.setColor(Color.orange);
+        g.setFont(new Font("Calibri", Font.BOLD, 80));
+        FontMetrics metrics = getFontMetrics(g.getFont());
+        g.drawString("Score: " + score, (GamePanel.terrariumWidth - metrics.stringWidth("Score: " + score)) / 2, 200);
 
         // Reštart
         g.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -138,8 +156,6 @@ public class GamePanel extends JPanel implements ActionListener {
             }}
 
             if (running) {
-                System.out.println(temporaryCounter);
-                System.out.println(timerMultiply);
                 temporaryCounter=0;
                 snake.move();
                 checkFoodCollision();
@@ -152,13 +168,21 @@ public class GamePanel extends JPanel implements ActionListener {
 
     }
 
+    private void lifeLost (){
+        if (lives>0){
+            lives--;
+            running = false;
+        }else{
+            gameOver = true;
+            running = false;
+        }
+    }
     // Pridať metódu pre kontrolu kolízií
     private void checkCollisions() {
         // Kontrola kolízie s telom
         for (int i = 1; i < snake.getBodyParts(); i++) {
             if (snake.getHeadX() == snake.getX(i) && snake.getHeadY() == snake.getY(i)) {
-                running = false;
-                gameOver = true;
+                lifeLost();
             }
         }
 
@@ -170,8 +194,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         if (snake.getHeadX() < terrariumLeft || snake.getHeadX() >= terrariumRight ||
         snake.getHeadY() < terrariumTop || snake.getHeadY() >= terrariumBottom) {
-            running = false;
-            gameOver = true;
+            lifeLost();
         }
 
         if (!running) {
@@ -213,7 +236,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     }
                     break;
                 case KeyEvent.VK_SPACE:
-                    if (gameOver) {
+                    if (!running) {
                         startGame();
                     }
                     break;

@@ -5,6 +5,7 @@ public class SnakeGame extends JFrame {
     public static final int SCREEN_HEIGHT = 800;
     public static final int UNIT_SIZE = 20;
     public static final int DELAY = 10;
+    public static final int SNAKE_LIVES = 3;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(SnakeGame::new);
