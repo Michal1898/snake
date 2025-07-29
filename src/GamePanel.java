@@ -16,6 +16,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private Random random;
     private int score;
     private boolean gameOver;
+    private static int temporaryCounter;
+    private static int temporaryCounter2;
+    private static int timerMultiply;
 
     public static int terrariumWidth =700;
     public static int terrariumHeight = 500;
@@ -39,6 +42,7 @@ public class GamePanel extends JPanel implements ActionListener {
         food = new Food(random, this.terrariumWidth,this.terrariumHeight, SnakeGame.UNIT_SIZE);
         score = 0;
         running = true;
+        timerMultiply =20;
         timer = new Timer(SnakeGame.DELAY, this);
         timer.start();
     }
@@ -116,12 +120,36 @@ public class GamePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (running) {
-            snake.move();
-            checkFoodCollision();
-            checkCollisions();
+// nebyl jsem schopny prenastavit timer interval
+        // proto jsem nabastlil tuhle prasarnu.
+        //Az se to naucim, tak to zrusim!
+        if (++temporaryCounter> timerMultiply){
+            if(++temporaryCounter2> 30-timerMultiply){
+                temporaryCounter2=0;
+                temporaryCounter=0;
+                timerMultiply--;
+
+            if(timerMultiply >1){
+                timerMultiply--;
+            }else {
+                timerMultiply =1;
+                // not necessary, but
+                //better save than sorry
+            }}
+
+            if (running) {
+                System.out.println(temporaryCounter);
+                System.out.println(timerMultiply);
+                temporaryCounter=0;
+                snake.move();
+                checkFoodCollision();
+                checkCollisions();
+
+            }
+            repaint();
         }
-        repaint();
+
+
     }
 
     // Pridať metódu pre kontrolu kolízií
